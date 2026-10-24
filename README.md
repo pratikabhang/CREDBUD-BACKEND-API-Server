@@ -1,229 +1,239 @@
-# ⚙️ CREDBUD-BACKEND-API-Server
+# ⚙️ CREDBUD Backend API Server
 
-> A Node.js and Express backend providing REST API endpoints for user management, authentication, attendance, grants, subjects, posts, and administrative operations.
+> A modular Node.js and Express REST API powering CREDBUD's authentication, user management, attendance, grants, subjects, posts, and administrative operations.
 
 ![Node.js](https://img.shields.io/badge/Node.js-22.16.0-339933?logo=nodedotjs&logoColor=white)
-![Express](https://img.shields.io/badge/Express.js-Backend-000000?logo=express&logoColor=white)
-![REST API](https://img.shields.io/badge/API-REST-blue)
-![Environment](https://img.shields.io/badge/Environment-Node.js-green)
-![License](https://img.shields.io/badge/License-Not%20Specified-lightgrey)
+![Express](https://img.shields.io/badge/Express.js-4.18.2-000000?logo=express&logoColor=white)
+![JavaScript](https://img.shields.io/badge/JavaScript-ES6%2B-F7DF1E?logo=javascript&logoColor=black)
+![Firebase](https://img.shields.io/badge/Firebase-FFCA28?logo=firebase&logoColor=black)
+![API](https://img.shields.io/badge/API-REST-blue)
+![License](https://img.shields.io/badge/License-ISC-lightgrey)
 
 ## 📖 Overview
 
-**BACKEND** is a Node.js backend project built using Express.js. The application exposes REST API routes for several modules, including user management, authentication, attendance, grants, subjects, posts, and administration.
+**CREDBUD Backend API Server** is the server-side component of the CREDBUD application. Built with Node.js and Express.js, it organizes application endpoints into separate route modules and uses middleware, controllers, and utility functions to manage request processing.
 
-The codebase uses middleware for JSON request parsing, cookie handling, cross-origin resource sharing (CORS), request logging, and user-type checks. It also includes HTTPS server configuration for non-production environments and a separate production startup path.
+The backend provides route groups for authentication, users, attendance, grants, subjects, posts, and administration. Its dependencies also support Firebase integration, Google APIs, JWT-based authentication, password hashing, scheduled tasks, and OTP-related functionality.
 
-The repository provides the server-side foundation for the **CREDBUD** application, as indicated by its API health-check response.
+This repository is maintained independently from the frontend.
 
-🔗 **GitHub Repository:** [pratikabhang/BACKEND](https://github.com/pratikabhang/BACKEND)
+**Related repositories**
+
+- Backend API: [CREDBUD-BACKEND-API-Server](https://github.com/pratikabhang/CREDBUD-BACKEND-API-Server)
+- Frontend application: [CREDBUD-FRONTEND](https://github.com/pratikabhang/CREDBUD-FRONTEND)
 
 ## ✨ Features
 
-- **User Management:** Provides a dedicated route group for user-related operations.
-- **Authentication:** Separates authentication endpoints from other application routes.
-- **Attendance Management:** Exposes endpoints through a dedicated attendance route group.
-- **Grant Management:** Organizes grant-related API operations separately.
-- **Subject Management:** Provides routes for subject-related operations.
-- **Posts and Administration:** Includes dedicated post and admin route groups.
-- **Middleware Integration:** Uses Express middleware for request parsing, cookies, CORS, and logging.
-- **HTTPS Development Support:** Configures an HTTPS server for non-production execution.
-- **Environment-Based Startup:** Selects the server startup behavior based on `NODE_ENV`.
+- **REST API Architecture:** Organizes HTTP endpoints into dedicated modules.
+- **Authentication Support:** Includes JWT, password-hashing, and OTP-related dependencies.
+- **User Management:** Provides a dedicated user route group.
+- **Attendance Management:** Separates attendance-related API operations.
+- **Grant Management:** Organizes grant-related functionality.
+- **Subject and Post Management:** Maintains separate route groups for subjects and posts.
+- **Administrative APIs:** Provides a dedicated admin route group.
+- **Firebase Integration:** Includes Firebase and Firebase Admin SDK dependencies.
+- **Google API Integration:** Includes the Google APIs client library.
+- **Scheduled Tasks:** Uses `node-cron` for scheduling recurring jobs.
+- **Reusable Middleware:** Uses request parsing, cookies, CORS, and logging middleware.
+- **Environment-Specific Startup:** Provides separate development and production startup commands.
 
-The specific endpoint methods, authorization rules, database operations, and request schemas depend on the implementation in the corresponding route and controller files.
+The exact behavior of individual authentication flows, API operations, and scheduled tasks depends on the implementation in the source code.
 
 ## 🛠️ Tech Stack
 
-![Node.js](https://img.shields.io/badge/Node.js-339933?logo=nodedotjs&logoColor=white)
-![Express](https://img.shields.io/badge/Express.js-000000?logo=express&logoColor=white)
-![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?logo=javascript&logoColor=black)
-![npm](https://img.shields.io/badge/npm-CB3837?logo=npm&logoColor=white)
-
 | Technology | Purpose |
 |---|---|
-| Node.js | JavaScript runtime |
-| Express.js | HTTP server and routing |
-| dotenv | Loads environment variables |
-| cors | Configures cross-origin resource sharing |
-| cookie-parser | Parses cookies from incoming requests |
+| Node.js 22.16.0 | JavaScript runtime |
+| Express.js 4.x | HTTP server and routing |
+| JavaScript | Backend application logic |
+| Firebase | Firebase service integration |
+| Firebase Admin SDK | Server-side Firebase operations |
+| Google APIs | Google service integrations |
+| JSON Web Token | Token-based authentication support |
+| bcrypt / bcryptjs | Password hashing libraries |
+| dotenv | Environment configuration |
+| CORS | Cross-origin request configuration |
+| cookie-parser | Cookie parsing |
 | Morgan | HTTP request logging |
-| Node.js `https` module | Creates an HTTPS server |
-| Node.js `fs` module | Reads certificate and key files |
-| Netlify configuration | Deployment-related configuration present in the repository |
+| node-cron | Scheduled jobs |
+| Speakeasy | OTP functionality |
+| Nodemon | Development server restart |
+| cross-env | Cross-platform environment variables |
 
-The repository's `.node-version` specifies **Node.js 22.16.0**. The complete dependency list and versions should be taken from `package.json` and the available lockfile, if any.
+Refer to `package.json` for the exact dependency versions.
 
 ## 🏗️ Architecture
 
-The backend follows a modular Express.js architecture that separates route definitions, controllers, middleware, and utility functions.
-
 ```text
-                 Client Application
-                        |
-                        v
-                   Express App
-                        |
-                        v
-                 Middleware Layer
-           +------------+-------------+
-           |            |             |
-           v            v             v
-         CORS        JSON Parser   Cookie Parser
-           |            |             |
-           +------------+-------------+
-                        |
-                        v
-                   API Router
-                        |
-      +-----------------+------------------+
-      |          |          |               |
-      v          v          v               v
-    Users      Auth     Attendance       Grants
-      |          |          |               |
-      +----------+----------+---------------+
-                        |
-                        v
-                    Controllers
-                        |
-                        v
-                   Application Logic
+                 Frontend Client
+                       |
+                       v
+                  Express App
+                       |
+                       v
+                Middleware Layer
+                       |
+                       v
+                   API Routes
+                       |
+       +---------------+----------------+
+       |        |       |       |        |
+       v        v       v       v        v
+     Users     Auth  Attendance Grants  Admin
+       |        |       |       |        |
+       +--------+-------+-------+--------+
+                       |
+                       v
+                   Controllers
+                       |
+                       v
+                 Utility Modules
+                       |
+              +--------+--------+
+              |                 |
+              v                 v
+          Firebase           Google APIs
 ```
 
-### API Route Groups
+The diagram illustrates the modular design and available integrations; actual data flow depends on the individual route handlers and controllers.
 
-The application registers the following route prefixes in `app.js`:
+## 🛣️ API Route Groups
 
-| Route prefix | Module |
+| Route prefix | Purpose |
 |---|---|
 | `/api/v1/user` | User management |
 | `/api/v1/auth` | Authentication |
-| `/api/v1/attendance` | Attendance |
-| `/api/v1/grant` | Grants |
+| `/api/v1/attendance` | Attendance operations |
+| `/api/v1/grant` | Grant operations |
 | `/api/v1/admin` | Administrative operations |
 | `/api/v1/subjects` | Subject management |
-| `/api/v1/posts` | Posts |
+| `/api/v1/posts` | Post management |
 
-These prefixes identify route groups, not a complete list of individual endpoints.
-
-## 🎯 Project Objectives
-
-- Provide a modular backend for the CREDBUD application.
-- Separate API route definitions from request-handling logic.
-- Organize application features into maintainable modules.
-- Support environment-specific server configuration.
-- Apply reusable middleware for common HTTP concerns.
-- Provide health-check endpoints for basic server availability testing.
+These prefixes identify registered route groups. Inspect `routes/` and `controllers/` for individual endpoints, supported HTTP methods, payloads, and authentication requirements.
 
 ## 📂 Project Structure
 
 ```text
-BACKEND/
-├── .netlify/          # Netlify-related configuration
-├── controllers/       # Request-handling logic
-├── middleware/        # Request-processing middleware
-├── routes/            # API route definitions
-├── utils/             # Shared utility functions
-├── app.js             # Express application entry point
-├── package.json       # Project metadata and dependencies
-├── .node-version      # Node.js version specification
-├── .envbak            # Environment-related backup file
-├── cert.pem           # SSL certificate file
-├── key.pem            # SSL private key file
-├── appmap.yml         # Application mapping configuration
-├── .gitignore         # Git ignore rules
-└── .gitattributes     # Git file-handling configuration
+CREDBUD-BACKEND-API-Server/
+├── .netlify/
+├── controllers/
+├── middleware/
+├── routes/
+├── utils/
+├── app.js
+├── package.json
+├── .node-version
+├── .envbak
+├── cert.pem
+├── key.pem
+├── appmap.yml
+├── .gitignore
+└── .gitattributes
 ```
 
-**Security note:** The repository listing includes `key.pem` and `cert.pem`. Never publish a real production private key. If `key.pem` contains an actual private key that has been exposed publicly, replace it and review the repository history.
+- `app.js` — Express application entry point.
+- `routes/` — API route definitions.
+- `controllers/` — Request-handling logic.
+- `middleware/` — Shared request-processing middleware.
+- `utils/` — Utility functions.
+- `package.json` — Dependencies and npm scripts.
+- `.node-version` — Node.js version specification.
+
+## 🎯 Scope and Objectives
+
+### In scope
+
+- Organizing backend API endpoints.
+- Supporting authentication-related functionality.
+- Providing modular user, attendance, grant, subject, post, and admin routes.
+- Integrating configured external services.
+- Supporting development and production startup workflows.
+
+### Out of scope
+
+- Frontend UI implementation.
+- Browser-side routing and presentation.
+- Client-side charts, QR scanning, and calendar components.
+- Frontend deployment configuration.
+
+These responsibilities belong to the separate frontend repository or the relevant external services.
 
 ## 💻 Prerequisites
 
-Before running the backend, install:
-
-- [Node.js 22.16.0](https://nodejs.org/)
-- npm, included with Node.js
+- Node.js 22.16.0
+- npm
 - Git
-- Valid local TLS certificate and private key files if using the non-production HTTPS startup path
+- Required environment variables and service credentials
+- Valid development TLS certificates if required by the non-production startup configuration
 
-Check the installed versions:
+Check your versions:
 
 ```bash
 node --version
 npm --version
 ```
 
-The Node.js version should match the version specified in `.node-version`.
-
 ## 🚀 Installation and Setup
 
-### 1. Clone the Repository
+### 1. Clone the repository
 
 ```bash
-git clone https://github.com/pratikabhang/BACKEND.git
-cd BACKEND
+git clone https://github.com/pratikabhang/CREDBUD-BACKEND-API-Server.git
+cd CREDBUD-BACKEND-API-Server
 ```
 
-### 2. Install Dependencies
+### 2. Install dependencies
 
 ```bash
 npm install
 ```
 
-This installs the dependencies declared in `package.json`.
+### 3. Configure environment variables
 
-### 3. Configure Environment Variables
+Create a local `.env` file containing the variables required by the application.
 
-The application loads environment variables through `dotenv`.
-
-Create a local `.env` file using the variable names required by the application:
+Example startup configuration:
 
 ```env
 NODE_ENV=development
 PORT=443
 ```
 
-These values illustrate the startup configuration visible in `app.js`. Review the route handlers, controllers, and configuration before adding any database credentials, authentication secrets, or other variables.
+These example values are not a complete configuration. Review `app.js`, the controllers, and the integration code for the actual required variables.
 
-Do not commit `.env` files containing sensitive values.
+Never commit credentials, tokens, or private keys.
 
-### 4. Configure HTTPS for Local Development
+### 4. Configure development HTTPS
 
-The non-production startup path reads:
+The development configuration references `cert.pem` and `key.pem`. Ensure valid local development certificate files are available at the paths expected by the application.
 
-```text
-key.pem
-cert.pem
-```
+Never use an exposed production private key.
 
-Ensure valid local certificate and private key files exist at the paths expected by `app.js`.
-
-For local development, use certificates appropriate for your development environment. Never use a publicly exposed private key in production.
-
-### 5. Start the Server
-
-Inspect `package.json` to confirm the available npm scripts. If no suitable start script exists, the application entry point can be run directly:
+### 5. Start development
 
 ```bash
-node app.js
+npm run dev
 ```
 
-The server uses HTTPS in non-production mode and listens on the configured `PORT`, defaulting to `443`. In production mode, it uses `app.listen()` with `process.env.PORT`.
+This runs the application through Nodemon when configured in `package.json`.
 
-**Important:** Set the environment variables and certificate files correctly before starting the application.
+### 6. Start production
+
+```bash
+npm start
+```
+
+The production script sets the production environment and starts `app.js`. Configure the deployment port and required service credentials in the hosting environment.
 
 ## ▶️ API Usage
 
-### Health Check
-
-The application defines a root endpoint for checking server availability.
-
-**Request**
+### Root health check
 
 ```http
 GET /
 ```
 
-**Example response**
+Example response:
 
 ```json
 {
@@ -231,15 +241,13 @@ GET /
 }
 ```
 
-### API Test Endpoint
-
-**Request**
+### API health check
 
 ```http
 GET /api/v1/test
 ```
 
-**Example response**
+Example response:
 
 ```json
 {
@@ -247,132 +255,112 @@ GET /api/v1/test
 }
 ```
 
-These health-check endpoints are defined directly in `app.js`.
+### Test with cURL
 
-### Available API Route Prefixes
-
-The application registers the following API groups:
-
-```text
-/api/v1/user
-/api/v1/auth
-/api/v1/attendance
-/api/v1/grant
-/api/v1/admin
-/api/v1/subjects
-/api/v1/posts
-```
-
-To identify the available HTTP methods, parameters, request bodies, and responses for each route, inspect the files in `routes/` and their associated controllers.
-
-## 🔧 Development
-
-### Check Installed Dependencies
+For a locally running HTTPS server with a trusted development certificate:
 
 ```bash
-npm ls --depth=0
+curl https://localhost:443/
 ```
-
-### Check Node.js Version
-
-```bash
-node --version
-```
-
-### Inspect Server Logs
-
-Morgan is configured with the `tiny` logging format, which records HTTP request information in the server output.
-
-### Test API Endpoints
-
-Use a REST client such as Postman, Insomnia, or `curl` to test the health-check endpoints and the application routes.
-
-For example, if the local HTTPS server is running with a trusted development certificate:
 
 ```bash
 curl https://localhost:443/api/v1/test
 ```
 
-If your development certificate is self-signed, configure trust for that certificate in your development environment instead of disabling TLS verification as a general practice.
+Use the configured port if it differs from `443`.
 
-## 🔐 Security Considerations
+## ⚙️ Environment Configuration
 
-Before deploying this backend publicly:
+Depending on the enabled features, the application may require:
 
-- Keep production credentials and authentication secrets outside source control.
-- Replace any exposed private keys and rotate affected credentials.
-- Validate incoming request bodies and query parameters.
-- Apply authentication and authorization to protected endpoints.
-- Restrict CORS origins to trusted frontend applications.
-- Disable verbose development behavior in production.
-- Configure HTTPS and secure cookie attributes appropriately.
-- Review dependency vulnerabilities regularly.
-- Ensure `NODE_ENV` and `PORT` are configured correctly for the deployment platform.
+- `NODE_ENV` — startup environment.
+- `PORT` — listening port.
+- Firebase credentials — for server-side Firebase operations.
+- Google API credentials — for enabled Google integrations.
+- TLS certificate and key — for the development HTTPS configuration.
 
-## 🚀 Future Improvements
+This is a configuration overview, not an exhaustive list of environment variables. Confirm exact names and requirements in the source code.
 
-Potential improvements include:
+## 🔐 Security
 
-- Document all API endpoints with OpenAPI/Swagger.
-- Add automated unit and integration tests.
+- Keep production credentials and authentication secrets out of Git.
+- If a real private key has been exposed, replace it and review repository history.
+- Enforce authorization on protected endpoints.
+- Validate request bodies and query parameters.
+- Configure CORS for trusted frontend origins.
+- Protect Firebase and Google service credentials.
+- Use secure cookie attributes where applicable.
+- Review dependencies for known vulnerabilities.
+- Use HTTPS and appropriate production error handling.
+
+## 🧪 Testing
+
+Review the scripts in `package.json` before running tests. If an automated test suite is not configured, manually test the health checks and relevant API endpoints using a REST client.
+
+Automated unit and integration tests are recommended for route handlers, middleware, authentication, and external service integrations.
+
+## 🔮 Future Improvements
+
+- Add OpenAPI/Swagger documentation.
+- Introduce automated unit and integration tests.
 - Provide a sanitized `.env.example`.
-- Add structured error handling and consistent API response formats.
-- Introduce request validation for each route.
-- Add centralized logging and monitoring.
-- Configure a repeatable deployment workflow.
-- Add health checks suitable for production monitoring.
-- Document database technology and schemas after confirming the implementation.
+- Standardize API error responses.
+- Add centralized request validation and error handling.
+- Document authentication flows and API payloads.
+- Improve production logging and monitoring.
+- Add CI checks for tests and dependency security.
+- Review exposed certificate files and deployment configuration.
 
-These are suggested enhancements, not claims about existing functionality.
+These are proposed improvements, not claims about existing functionality.
 
 ## 🤝 Contributing
-
-Contributions and improvements are welcome.
 
 1. Fork the repository.
 2. Clone your fork:
 
    ```bash
-   git clone https://github.com/<your-username>/BACKEND.git
-   cd BACKEND
+   git clone https://github.com/<your-username>/CREDBUD-BACKEND-API-Server.git
+   cd CREDBUD-BACKEND-API-Server
    ```
 
-3. Create a feature branch:
+3. Create a branch:
 
    ```bash
    git checkout -b feature/your-feature-name
    ```
 
-4. Make your changes in the relevant routes, controllers, middleware, or utilities.
-5. Test the affected API behavior.
-6. Commit your changes:
+4. Make and test your changes.
+5. Commit your work:
 
    ```bash
    git add .
-   git commit -m "Improve backend functionality"
+   git commit -m "Improve backend API functionality"
    ```
 
-7. Push the branch:
+6. Push your branch:
 
    ```bash
    git push origin feature/your-feature-name
    ```
 
-8. Open a pull request explaining the changes and tests performed.
+7. Open a pull request with a description of the changes and tests performed.
+
+Do not include credentials, private keys, or sensitive environment files in contributions.
 
 ## 📄 License
 
-No repository-wide license has been confirmed. Until a `LICENSE` file is added, do not assume that the code may be freely redistributed or reused.
+The project's `package.json` specifies the **ISC License**. Review the repository's license files and preserve applicable third-party notices.
 
 ## 👨‍💻 Author
 
 **Pratik Abhang**
 
 - GitHub: [@pratikabhang](https://github.com/pratikabhang)
-- Repository: [BACKEND](https://github.com/pratikabhang/BACKEND)
+- Backend: [CREDBUD-BACKEND-API-Server](https://github.com/pratikabhang/CREDBUD-BACKEND-API-Server)
+- Frontend: [CREDBUD-FRONTEND](https://github.com/pratikabhang/CREDBUD-FRONTEND)
 
 ---
 
 ⭐ If you find this project useful, consider starring the repository.
 
-*Modular APIs. Clear separation of concerns. Maintainable backend development.*
+*Secure APIs. Modular architecture. Reliable backend development.*
