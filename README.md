@@ -1,4 +1,4 @@
-# ⚙️ BACKEND — CREDBUD API Server
+# ⚙️ cREDBUD-BACKEND-API-ServeR
 
 > A Node.js and Express backend providing REST API endpoints for user management, authentication, attendance, grants, subjects, posts, and administrative operations.
 
